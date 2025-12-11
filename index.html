@@ -178,12 +178,18 @@
             </div>`;
         marker.bindPopup(popupHtml, {maxWidth: 300});
 
-        // Tooltip permanent unique (visible dès le chargement)
-        var tooltipHtml = `
-            <strong>${loc.name}</strong><br>
-            // <small>Région : ${loc.region || "—"}<br>
+        // Tooltip permanent unique (visible dès le chargement)// <small>Région : ${loc.region || "—"}<br>
             // Ville / zone : ${loc.zone || "—"}<br>
             // Tél : ${loc.tel || "—"}</small>
+
+
+
+
+
+        
+        var tooltipHtml = `
+            <strong>${loc.name}</strong><br>
+            
         `;
         marker.bindTooltip(tooltipHtml, {
             permanent: true,

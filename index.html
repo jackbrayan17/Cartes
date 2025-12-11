@@ -23,6 +23,30 @@
         }
         html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
         .leaflet-container { font-size: 1rem; }
+
+        /* Style unique pour le tooltip permanent */
+        .permanent-tooltip {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            border: 2px solid #333 !important;
+            border-radius: 8px !important;
+            padding: 8px 12px !important;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+            max-width: 280px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .permanent-tooltip strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        .permanent-tooltip small {
+            font-weight: normal;
+            color: #555;
+        }
     </style>
     <script>
         L_NO_TOUCH = false;
@@ -33,7 +57,7 @@
     <div class="folium-map" id="map"></div>
 </body>
 <script>
-    // Initialize the map (centered on Cameroon)
+    // Initialisation de la carte
     var map = L.map("map", {
         center: [7.0, 12.0],
         zoom: 6,
@@ -41,13 +65,24 @@
         preferCanvas: false
     });
 
-    // OpenStreetMap tile layer
+    // Couche OpenStreetMap
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19
     }).addTo(map);
 
-    // Data array - all locations with properly converted decimal coordinates
+    // Tableau de couleurs distinctes
+    var colors = [
+        '#e52d2d', '#e52816', '#e52700', '#e55d2d', '#e55d16', '#e56200', '#e58c2d', '#e59216', '#e59d00', '#e5bb2d',
+        '#e5c716', '#e5d800', '#e0e52d', '#cde516', '#b7e500', '#b1e52d', '#98e516', '#7ce500', '#81e52d', '#63e516',
+        '#41e500', '#52e52d', '#2ee516', '#06e500', '#2de538', '#16e534', '#00e534', '#2de567', '#16e569', '#00e56f',
+        '#2de596', '#16e59e', '#00e5aa', '#2de5c6', '#16e5d3', '#00e5e5', '#2dd5e5', '#16c2e5', '#00aae5', '#2da6e5',
+        '#168ce5', '#006fe5', '#2d77e5', '#1657e5', '#0034e5', '#2d48e5', '#1622e5', '#0600e5', '#422de5', '#4016e5',
+        '#4100e5', '#722de5', '#7516e5', '#7c00e5', '#a12de5', '#aa16e5', '#b700e5', '#d02de5', '#df16e5', '#e500d8',
+        '#e52dcb', '#e516b6', '#e5009d', '#e52d9c', '#e51681', '#e50062', '#e52d6c', '#e5164c', '#e50027', '#e52d3d'
+    ];
+
+    // Données des emplacements
     var locations = [
         {name: "GIC DJOUMA", tel: "—", zone: "Bamguel, Maroua", region: "Extreme nord", lat: 10.8, lng: 14.05},
         {name: "NDOUMESSI", tel: "—", zone: "Kribi, Centre", region: "Sud", lat: 2.925, lng: 9.9167},
@@ -114,26 +149,42 @@
         {name: "DAKGO POLYCARPE", tel: "677-003157", zone: "Douala", region: "Littoral", lat: 4.051389, lng: 9.685556}
     ];
 
-    // Add all markers dynamically
-    locations.forEach(function(loc) {
+    // Ajout des marqueurs
+    locations.forEach(function(loc, index) {
+        var color = colors[index % colors.length];
+
         var marker = L.circleMarker([loc.lat, loc.lng], {
-            color: "#3388ff",
-            fill: false,
-            fillColor: "#3388ff",
-            fillOpacity: 0.2,
-            radius: 5,
+            color: color,
+            fill: true,
+            fillColor: color,
+            fillOpacity: 0.8,
+            radius: 8,
             weight: 2
         }).addTo(map);
 
-        var popupHtml = `<div style="width:100%; height:100%;">
-            <b>${loc.name}</b><br>
-            Région : ${loc.region}<br>
-            Ville / zone : ${loc.zone}<br>
-            Tél : ${loc.tel || "—"}
-        </div>`;
-
+        // Popup au clic (détails complets)
+        var popupHtml = `
+            <div style="min-width:200px;">
+                <strong>${loc.name}</strong><br>
+                Région : ${loc.region}<br>
+                Ville / zone : ${loc.zone}<br>
+                Tél : ${loc.tel || "—"}
+            </div>`;
         marker.bindPopup(popupHtml, {maxWidth: 300});
-        marker.bindTooltip(`<div>${loc.name}</div>`, {sticky: true});
+
+        // Un seul tooltip permanent (visible dès le chargement de la page)
+        var tooltipHtml = `
+            <strong>${loc.name}</strong><br>
+            <small>Région : ${loc.region}<br>
+            Ville / zone : ${loc.zone}<br>
+            Tél : ${loc.tel || "—"}</small>
+        `;
+        marker.bindTooltip(tooltipHtml, {
+            permanent: true,        // Toujours visible
+            direction: 'top',       // Affiché au-dessus du marqueur
+            className: 'permanent-tooltip',
+            offset: [0, -10]        // Légèrement au-dessus
+        });
     });
 </script>
 </html>

@@ -82,75 +82,84 @@
         '#e52dcb', '#e516b6', '#e5009d', '#e52d9c', '#e51681', '#e50062', '#e52d6c', '#e5164c', '#e50027', '#e52d3d'
     ];
 
-    // Données des emplacements
+    // Données mises à jour avec les nouvelles coordonnées décimales
     var locations = [
         {name: "GIC DJOUMA", tel: "—", zone: "Bamguel, Maroua", region: "Extreme nord", lat: 10.8, lng: 14.05},
         {name: "NDOUMESSI", tel: "—", zone: "Kribi, Centre", region: "Sud", lat: 2.925, lng: 9.9167},
-        {name: "GIC PRODUCTEURS DES OIGNONS", tel: "675020727", zone: "Nord", region: "Nord", lat: 9.3226016, lng: 13.393389},
-        {name: "GIC PRODUCTEURS DES PEPINIERES DE MAYO-LOUE", tel: "699701299", zone: "Nord", region: "Nord", lat: 8.2410564, lng: 13.2174246},
-        {name: "GIC MADINA DES PRODUCTEURS DES CULTURES MARAICHERES DE BARGARAM", tel: "652591465", zone: "Ilarifa, Extreme nord", region: "Extreme nord", lat: 12.44, lng: 14.95},
-        {name: "groupe des élèves de Volaille de Rouge", tel: "676502725", zone: "Donry-BENOUE", region: "Nord", lat: 9.3226016, lng: 13.393389},
-        {name: "Société coopérative simplifiée des éleveurs de poulet, de chair", tel: "691772660", zone: "NASSARAO-GAROUA", region: "Nord", lat: 9.333333, lng: 13.183333},
-        {name: "Mandu, à Wawo, épouse Mbakom", tel: "696112432", zone: "foumbot", region: "Ouest", lat: 5.508031, lng: 10.6325},
-        {name: "GROUPE D'INITIATIVE COMMUNE DES PRODUCTEURS ET COMMERCANTS DES FRUITS DU MAYO-DANAY", tel: "698252640", zone: "Caïcaï, dans le quartier Mangal(maroua)", region: "Extreme nord", lat: 10.6667589, lng: 15.0284567},
-        {name: "SCOOPS PROD. MAÏS ET OIGNONS KOZA", tel: "696676662", zone: "Caïcaï, dans le quartier Mangal(maroua)", region: "Extreme nord", lat: 10.6667589, lng: 15.0284567},
-        {name: "SOCIETE COOPERATIVE AVEC CONSEIL D'ADMINISTRATION DES PRODUCTEURS D'OIGNON DE NGONG", tel: "695245414", zone: "Tamoundé, en allant vers Tukalongo", region: "Littoral", lat: 9.016667, lng: 13.183333},
-        {name: "Société des Producteurs d'Oignons", tel: "69000012", zone: "Dockbar, en allant vers Tamoundé", region: "Littoral", lat: 9.016667, lng: 13.183333},
-        {name: "NOPING", tel: "691027853", zone: "DOUALA", region: "Littoral", lat: 4.051389, lng: 9.685556},
-        {name: "Sanaga Farms", tel: "699612687", zone: "BAFOUSSAM", region: "Ouest", lat: 5.47775, lng: 10.417589},
+        {name: "GIC PRODUCTEURS DES OIGNONS", tel: "—", zone: "Nord", region: "Nord", lat: 10.61, lng: 14.37},
+        {name: "GIC PRODUCTEURS DES PEPINIERES DE MAYO-LOUE", tel: "7E+08", zone: "Nord", region: "Nord", lat: 8.241056, lng: 13.21742},
+        {name: "GIC MADINA DES PRODUCTEURS DES CULTURES MARAICHERES DE BARGARAM", tel: "6.53E+08", zone: "Ilarifa, Extreme nord", region: "Extreme nord", lat: 12.44, lng: 14.95},
+        {name: "groupe des élèves de Volaille de Rouge", tel: "6.77E+08", zone: "Donry-BENOUE", region: "Nord", lat: 10.74028, lng: 13.80278},
+        {name: "Société coopérative simplifiée des éleveurs de poulet, de chair", tel: "6.92E+08", zone: "NASSARAO-GAROUA", region: "Nord", lat: 9.333333, lng: 13.18333},
+        {name: "Mandu, à Wawo, épouse Mbakom", tel: "6.96E+08", zone: "foumbot", region: "Ouest", lat: 5.563333, lng: 10.66833},
+        {name: "GROUPE D'INITIATIVE COMMUNE DES PRODUCTEURS ET COMMERCANTS DES FRUITS DU MAYO-DANAY", tel: "6.98E+08", zone: "Caïcaï, dans le quartier Mangal(maroua)", region: "Extreme nord", lat: 10.66676, lng: 15.02846},
+        {name: "SCOOPS PROD. MAÏS ET OIGNONS KOZA", tel: "6.97E+08", zone: "Caïcaï, dans le quartier Mangal(maroua)", region: "Extreme nord", lat: 10.66676, lng: 15.02846},
+        {name: "SOCIETE COOPERATIVE AVEC CONSEIL D'ADMINISTRATION DES PRODUCTEURS D'OIGNON DE NGONG", tel: "6.95E+08", zone: "Tamoundé, en allant vers Tukalongo", region: "Nord", lat: 13.33358, lng: 13.18333},
+        {name: "Société des Producteurs d'Oignons", tel: "69000012", zone: "Dockbar, en allant vers Tamoundé", region: "Nord", lat: 10.7336, lng: 14.60928},
+        {name: "NOPING", tel: "6.91E+08", zone: "DOUALA", region: "Littoral", lat: 4.03, lng: 9.7},
+        {name: "Sanaga Farms", tel: "7E+08", zone: "BAFOUSSAM", region: "Ouest", lat: 5.47775, lng: 10.41759},
         {name: "Madame Saïz épouse Wemny", tel: "677766234 / 696606480", zone: "Yaoundé et à Ebolowa", region: "Sud", lat: 2.916664, lng: 11.15},
-        {name: "Coopérative d'éleveurs de canards et de poulets de Bupindi", tel: "674853303", zone: "Bipindi", region: "Sud", lat: 3.083333, lng: 10.416664},
-        {name: "TIOMELA CLOTILDE", tel: "675151364", zone: "foumbot", region: "Ouest", lat: 5.508031, lng: 10.6325},
-        {name: "GROUPE D'INITIATIVE COMMUNE DE FABRICATION NATURELLE DE YAOURT DU LITTORAL CENTRE", tel: "699788027", zone: "Littoral", region: "Littoral", lat: 4.051389, lng: 9.685556},
-        {name: "GIC DES PRODUCTRICES DE MANIOC", tel: "678227820", zone: "Littoral", region: "Littoral", lat: 4.051389, lng: 9.685556},
-        {name: "LYCEE DE GARI-GOMBO", tel: "651942556", zone: "Littoral", region: "Littoral", lat: 4.051389, lng: 9.685556},
-        {name: "SOCIETE COOPERATIVE AVEC CONSEIL D'ADMINISTRATION AGROPASTORALE DES ACTEURS DU DEVELOPPEMENT DE NITOUKOU", tel: "677750389", zone: "Tshukou", region: "Extreme nord", lat: 4.63, lng: 10.88},
-        {name: "Groupe Initiatives Communes Agropastoral", tel: "677-76-6234 / 696-60-6480", zone: "FOUMBOT", region: "Ouest", lat: 5.508031, lng: 10.6325},
-        {name: "SOCIETE COOPERATIVE SIMPLIFIEE RECOLTE 237 FERME NKOUE", tel: "690767345", zone: "Yaoundé", region: "Centre", lat: 7.365302, lng: 12.343439},
-        {name: "SOCIÉTÉ COOPERATIVE SIMPLIFIEE DES PRODUCTEURS DE PATATE DE BONJONG", tel: "697324852", zone: "Adamaoua", region: "Adamaoua", lat: 6.333661, lng: 13.530711},
-        {name: "SCOOPS PTASPL", tel: "656102611", zone: "yaoundé", region: "Centre", lat: 7.365302, lng: 12.343439},
-        {name: "STE COOP-CA DE PRODUCTION ET TRANSFORMATION DE MANIOC ET ACTIVITÉS CONNEXES DE MBANGASSINA", tel: "675493737", zone: "", region: "Centre", lat: 4.629722, lng: 11.706944},
-        {name: "SOCIETE COOPÉRATIVE AVEC CONSEIL D'ADMINISTRATION DES PRODUCTEURS DE MANIOC SAPE DE BERTOUA", tel: "691977154", zone: "Bertoua", region: "Est", lat: 4.575, lng: 13.684444},
-        {name: "coopacam -", tel: "699814462", zone: "MFOU", region: "Centre", lat: 4.45, lng: 11.633333},
-        {name: "SCOOP MAN DE MBALMAYO", tel: "696819231", zone: "Mbalmayo", region: "Centre", lat: 3.516667, lng: 11.5},
-        {name: "Maraiamou", tel: "696255220", zone: "Maroua", region: "Extreme Nord", lat: 10.583333, lng: 14.316667},
-        {name: "Groupe produccteur de poisson", tel: "682247271", zone: "Benbis à sangmelina", region: "Sud", lat: 3.433333, lng: 12.45},
-        {name: "Vente poisson fumé", tel: "695752643", zone: "Bertoua", region: "Est", lat: 4.575, lng: 13.684444},
-        {name: "Vente poulet fumé", tel: "695752643", zone: "Bertoua", region: "Est", lat: 4.575, lng: 13.684444},
-        {name: "Gic producteur de Haricot", tel: "67038821", zone: "Foumbot", region: "Ouest", lat: 5.508031, lng: 10.6325},
-        {name: "integrity-fruits", tel: "—", zone: "Douala", region: "Littoral", lat: 4.051389, lng: 9.685556},
-        {name: "Gic producteur de poisson Henri Samet", tel: "699 90 92 98", zone: "Kribi", region: "Centre", lat: 2.925, lng: 9.9167},
-        {name: "makou-epse-fotsing-delphine", tel: "—", zone: "Douala", region: "Littoral", lat: 4.051389, lng: 9.685556},
-        {name: "organisation interprofessionnelle de la filière lait de vaches au Cameroun", tel: "698319292", zone: "TCHABAM-FARO", region: "Nord", lat: 9.029518, lng: 1.416897},
-        {name: "Mélanie Tekaneng", tel: "698336566", zone: "Bertoua", region: "Est", lat: 4.575, lng: 13.684444},
-        {name: "Moisso-Michel", tel: "694884692", zone: "KRIBI", region: "Sud", lat: 2.925, lng: 9.9167},
-        {name: "Pompou Mangac", tel: "697181400", zone: "mbang-BATOURI", region: "Est", lat: 4.433333, lng: 14.366667},
+        {name: "Coopérative d'éleveurs de canards et de poulets de Bupindi", tel: "6.75E+08", zone: "Bipindi", region: "Sud", lat: 3.083333, lng: 10.41666},
+        {name: "TIOMELA CLOTILDE", tel: "6.75E+08", zone: "foumbot", region: "Ouest", lat: 5.383611, lng: 10.65639},
+        {name: "GROUPE D'INITIATIVE COMMUNE DE FABRICATION NATURELLE DE YAOURT DU LITTORAL CENTRE", tel: "7E+08", zone: "Littoral", region: "Littoral", lat: 4.078833, lng: 9.793694},
+        {name: "GIC DES PRODUCTRICES DE MANIOC", tel: "6.78E+08", zone: "Littoral", region: "Littoral", lat: 4.051389, lng: 9.685556},
+        {name: "LYCEE DE GARI-GOMBO", tel: "6.52E+08", zone: "Littoral", region: "Littoral", lat: 4.016667, lng: 9.716667},
+        {name: "SOCIETE COOPERATIVE AVEC CONSEIL D'ADMINISTRATION AGROPASTORALE DES ACTEURS DU DEVELOPPEMENT DE NITOUKOU", tel: "6.78E+08", zone: "Tshukou", region: "Extreme nord", lat: 4.63, lng: 10.88},
+        {name: "Groupe Initiatives Communes Agropastoral", tel: "677-76-6234 / 696-60-6480", zone: "FOUMBOT", region: "Ouest", lat: 5.503, lng: 10.637},
+        {name: "SOCIETE COOPERATIVE SIMPLIFIEE RECOLTE 237 FERME NKOUE", tel: "6.91E+08", zone: "Centre", region: "Centre", lat: 7.365302, lng: 12.34344},
+        {name: "SOCIÉTÉ COOPERATIVE SIMPLIFIEE DES PRODUCTEURS DE PATATE DE BONJONG", tel: "6.97E+08", zone: "Adamaoua", region: "Adamaoua", lat: 6.333661, lng: 13.53071},
+        {name: "SCOOPS PTASPL", tel: "6.56E+08", zone: "yaoundé", region: "Centre", lat: 3.938333, lng: 11.51556},
+        {name: "SOCIETE COOPERATIVE AVEC CONSEIL D'ADMINISTRATION DES PRODUCTEURS DE MANIOC WARACK MADIKOUM", tel: "6.96E+08", zone: "Adamaoua", region: "Adamaoua", lat: 28.06074, lng: 78.82411},
+        {name: "Leprince", tel: "6.99E+08", zone: "", region: "", lat: null, lng: null}, // pas de coordonnées
+        {name: "STE COOP-CA DE PRODUCTION ET TRANSFORMATION DE MANIOC ET ACTIVITÉS CONNEXES DE MBANGASSINA", tel: "6.75E+08", zone: "", region: "Centre", lat: 4.629722, lng: 11.70694},
+        {name: "SOCIETE COOPÉRATIVE AVEC CONSEIL D'ADMINISTRATION DES PRODUCTEURS DE MANIOC SAPE DE BERTOUA", tel: "6.92E+08", zone: "Bertoua", region: "Est", lat: 4.575, lng: 13.68444},
+        {name: "coopacam -", tel: "7E+08", zone: "MFOU", region: "Centre", lat: 4.45, lng: 11.63333},
+        {name: "SCOOP MAN DE MBALMAYO", tel: "6.97E+08", zone: "Mbalmayo", region: "Centre", lat: 3.516667, lng: 11.5},
+        {name: "Maraiamou", tel: "6.96E+08", zone: "Maroua", region: "Extreme Nord", lat: 10.58333, lng: 14.31667},
+        {name: "Groupe produccteur de poisson", tel: "6.82E+08", zone: "Benbis à sangmelina", region: "Sud", lat: 3.433333, lng: 12.45},
+        {name: "Vente poisson fumé", tel: "6.96E+08", zone: "Bertoua", region: "Est", lat: 4.575, lng: 13.68444},
+        {name: "Vente poulet fumé", tel: "6.96E+08", zone: "Bertoua", region: "Est", lat: 4.575, lng: 13.68444},
+        {name: "Gic producteur de Haricot", tel: "67038821", zone: "Foumbot", region: "Ouest", lat: 5.503, lng: 10.637},
+        {name: "integrity-fruits", tel: "—", zone: "Douala", region: "Littoral", lat: 4.078889, lng: 9.666667},
+        {name: "Gic producteur de poisson Henri Samet", tel: "699 90 92 98", zone: "Kribi", region: "Centre", lat: 2.845556, lng: 9.885556},
+        {name: "makou-epse-fotsing-delphine", tel: "—", zone: "Douala", region: "Littoral", lat: 4.016667, lng: 9.733333},
+        {name: "organisation interprofessionnelle de la filière lait de vaches au Cameroun", tel: "6.98E+08", zone: "TCHABAM-FARO", region: "Nord", lat: 10.58333, lng: 14.31667},
+        {name: "Mélanie Tekaneng", tel: "6.98E+08", zone: "Bertoua", region: "Est", lat: 4.575, lng: 13.68444},
+        {name: "Moisso-Michel", tel: "6.95E+08", zone: "KRIBI", region: "Sud", lat: 2.845556, lng: 9.885556},
+        {name: "Pompou Mangac", tel: "6.97E+08", zone: "mbang-BATOURI", region: "Est", lat: 4.433333, lng: 14.36667},
         {name: "société coopérative", tel: "656 02 80 82", zone: "NDOM,AKONOLINGA", region: "Centre", lat: 3.766667, lng: 12.25},
-        {name: "NYANO Patrice", tel: "699936505", zone: "Nkolbisson YAOUNDE", region: "Centre", lat: 3.871944, lng: 11.455},
-        {name: "KINDAG adlist sarl", tel: "653 90 79 49", zone: "Makak Centre", region: "Centre", lat: 3.548611, lng: 11.027778},
-        {name: "société Harris Yaourt", tel: "670 10 09 31", zone: "Yaoundé Ngoa ékelle", region: "Centre", lat: 3.986111, lng: 11.833056},
-        {name: "SCOOPS C.A.B.K.J", tel: "690,777,710", zone: "Ngaoundéré", region: "Adamaoua", lat: 7.316667, lng: 13.583333},
-        {name: "GIC FAPAC DE MFOU", tel: "699989564", zone: "Mfou", region: "Centre", lat: 4.45, lng: 11.633333},
-        {name: "OMBOLO BELLA du GIC JAEO d’Obala", tel: "678200307", zone: "Obala", region: "Centre", lat: 4.166667, lng: 11.533333},
-        {name: "ETS AGRITECH YAOUNDE", tel: "670545408", zone: "Yaoundé odza", region: "Centre", lat: 3.783333, lng: 11.533333},
-        {name: "Gic nel-agro", tel: "69995991", zone: "Nkolafamba", region: "Centre", lat: 3.858889, lng: 11.664722},
-        {name: "GIC AIDONS NOUS D'OBALA", tel: "656529861", zone: "EKOUMDOUM", region: "Centre", lat: 3.816667, lng: 11.533333},
-        {name: "BANANA GROUP", tel: "677649089", zone: "Simaleng yaoundé", region: "Centre", lat: 3.720164, lng: 11.551997},
+        {name: "NYANO Patrice", tel: "7E+08", zone: "Nkolbisson YAOUNDE", region: "Centre", lat: 3.871944, lng: 11.455},
+        {name: "KINDAG adlist sarl", tel: "653 90 79 49", zone: "Makak Centre", region: "Centre", lat: 3.548611, lng: 11.02778},
+        {name: "société Harris Yaourt", tel: "670 10 09 31", zone: "Yaoundé Ngoa ékelle", region: "Centre", lat: 3.986111, lng: 11.83306},
+        {name: "SCOOPS C.A.B.K.J", tel: "6.91E+08", zone: "Ngaoundéré", region: "Adamaoua", lat: 7.316667, lng: 13.58333},
+        {name: "GIC FAPAC DE MFOU", tel: "7E+08", zone: "Mfou", region: "Centre", lat: 4.45, lng: 11.63333},
+        {name: "OMBOLO BELLA du GIC JAEO d’Obala", tel: "6.78E+08", zone: "Obala", region: "Centre", lat: 4.166667, lng: 11.53333},
+        {name: "ETS AGRITECH YAOUNDE", tel: "6.71E+08", zone: "Yaoundé odza", region: "Centre", lat: 3.783333, lng: 11.53333},
+        {name: "Gic nel-agro", tel: "69995991", zone: "Nkolafamba", region: "Centre", lat: 3.858889, lng: 11.66472},
+        {name: "GIC ESPERANCE", tel: "6.76E+08", zone: "", region: "", lat: null, lng: null}, // pas de coordonnées
+        {name: "GIC AIDONS NOUS D'OBALA", tel: "6.57E+08", zone: "EKOUMDOUM", region: "Centre", lat: 3.816667, lng: 11.53333},
+        {name: "BANANA GROUP", tel: "6.78E+08", zone: "Simaleng yaoundé", region: "Centre", lat: 3.720164, lng: 11.552},
+        {name: "SCOOPS SAPAS", tel: "6.94E+08", zone: "Guidè au nord", region: "Nord", lat: 36.8065, lng: 10.18156},
+        {name: "GIC AGRONE de Nanga Eboko", tel: "673434672/679229967", zone: "Nanga Eboko", region: "Centre", lat: 4.683333, lng: 12.36667},
+        {name: "GIC LA RESERVE, à Djoandjila", tel: "694 16 99 10", zone: "Djoandjila", region: "", lat: null, lng: null}, // pas de coordonnées
+        {name: "GIC MAIN VERTE, à Batchenga", tel: "6.99E+08", zone: "Batchenga", region: "Centre", lat: 4.283333, lng: 11.65},
         {name: "GIC UNION FAIT LA FORCE DE PANGARI", tel: "677 64 70 25", zone: "PANGARI", region: "Adamaoua", lat: 6.01, lng: 13.3625},
-        {name: "AGRIDEVERT", tel: "653359507", zone: "ADAMAWA / BANQUIM", region: "Adamaoua", lat: 6.2833, lng: 11.1333},
-        {name: "GKIBIA AGROPORT", tel: "674158302", zone: "ADAMAWA / BANQUIM", region: "Adamaoua", lat: 6.2833, lng: 11.1333},
-        {name: "BEGEL SARL à Mindourou", tel: "699 771 423 / 696 006 048", zone: "Mindourou", region: "Est", lat: 3.4158, lng: 13.5394},
-        {name: "L'UNION DES SOCIETES COOPERATIVES AVEC CONSEIL D'ADMINISTRATION DES TRANSFORMATEURS DE LAIT DE MAROUA 1ER", tel: "696154363", zone: "Nord", region: "Nord", lat: 9.3226016, lng: 13.393389},
-        {name: "société Aris Yaourt", tel: "670 10 09 31", zone: "Yaoundé Ngoa ékelle", region: "Centre", lat: 3.986111, lng: 11.833056},
-        {name: "GIC GENGAL", tel: "677605789", zone: "Soa", region: "Centre", lat: 3.978056, lng: 11.595833},
-        {name: "ONGOLA EDZIMBI EPSE NDJOCK NGUIDJOL ELISABETH LAETITIA", tel: "691191603", zone: "Fandena", region: "Centre", lat: 3.885278, lng: 11.540833},
-        {name: "société Gic Niyya femme prod lait MINDIF", tel: "697996495", zone: "Mindif departement Maye kany", region: "Extreme nord", lat: 10.4, lng: 14.433333},
+        {name: "AGRIDEVERT", tel: "6.53E+08", zone: "ADAMAWA / BANQUIM", region: "Adamaoua", lat: 6.2833, lng: 11.1333},
+        {name: "GKIBIA AGROPORT", tel: "6.74E+08", zone: "ADAMAWA / BANQUIM", region: "Adamaoua", lat: 6.15, lng: 11.45},
+        {name: "BEGEL SARL à Mindourou", tel: "699 771 423/696 006 048", zone: "Mindourou", region: "Est", lat: 3.4158, lng: 13.5394},
+        {name: "L'UNION DES SOCIETES COOPERATIVES AVEC CONSEIL D'ADMINISTRATION DES TRANSFORMATEURS DE LAIT DE MAROUA 1ER", tel: "696154363", zone: "Nord", region: "Nord", lat: 9.322602, lng: 13.39339},
+        {name: "société Aris Yaourt", tel: "670 10 09 31", zone: "Yaoundé Ngoa ékelle", region: "Centre", lat: 3.986111, lng: 11.83306},
+        {name: "GIC GENGAL", tel: "6.78E+08", zone: "Soa", region: "Centre", lat: 3.978056, lng: 11.59583},
+        {name: "ONGOLA EDZIMBI EPSE NDJOCK NGUIDJOL ELISABETH LAETITIA", tel: "6.91E+08", zone: "Fandena", region: "Centre", lat: 3.885278, lng: 11.54083},
+        {name: "société Gic Niyya femme prod lait MINDIF", tel: "6.98E+08", zone: "Mindif departement Maye kany", region: "Extreme nord", lat: 10.4, lng: 14.43333},
         {name: "ATADJAM EPSE BAKARY", tel: "6-94-53-32-32", zone: "MAROUA, DOMAYO, BAR LAITIER NDJAREN", region: "Extreme nord", lat: 10.55, lng: 14.15},
         {name: "DAKGO POLYCARPE", tel: "677-003157", zone: "Douala", region: "Littoral", lat: 4.051389, lng: 9.685556}
     ];
 
-    // Ajout des marqueurs
+    // Ajout des marqueurs (seulement ceux avec coordonnées valides)
     locations.forEach(function(loc, index) {
+        if (loc.lat === null || loc.lng === null) return; // ignore les entrées sans coordonnées
+
         var color = colors[index % colors.length];
 
         var marker = L.circleMarker([loc.lat, loc.lng], {
@@ -162,28 +171,28 @@
             weight: 2
         }).addTo(map);
 
-        // Popup au clic (détails complets)
+        // Popup au clic
         var popupHtml = `
             <div style="min-width:200px;">
                 <strong>${loc.name}</strong><br>
-                Région : ${loc.region}<br>
-                Ville / zone : ${loc.zone}<br>
+                Région : ${loc.region || "—"}<br>
+                Ville / zone : ${loc.zone || "—"}<br>
                 Tél : ${loc.tel || "—"}
             </div>`;
         marker.bindPopup(popupHtml, {maxWidth: 300});
 
-        // Un seul tooltip permanent (visible dès le chargement de la page)
+        // Tooltip permanent unique (visible dès le chargement)
         var tooltipHtml = `
             <strong>${loc.name}</strong><br>
-            <small>Région : ${loc.region}<br>
-            Ville / zone : ${loc.zone}<br>
+            <small>Région : ${loc.region || "—"}<br>
+            Ville / zone : ${loc.zone || "—"}<br>
             Tél : ${loc.tel || "—"}</small>
         `;
         marker.bindTooltip(tooltipHtml, {
-            permanent: true,        // Toujours visible
-            direction: 'top',       // Affiché au-dessus du marqueur
+            permanent: true,
+            direction: 'top',
             className: 'permanent-tooltip',
-            offset: [0, -10]        // Légèrement au-dessus
+            offset: [0, -10]
         });
     });
 </script>

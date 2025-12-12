@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-   <style>
+    <style>
         #map {
             position: absolute;
             top: 0; bottom: 0; left: 0; right: 0;
@@ -22,111 +22,84 @@
         html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
         .leaflet-container { font-size: 1rem; }
 
-        /* Style for map key */
         #mapKey {
             position: fixed;
             top: 10px;
             left: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.92);
+            padding: 12px;
+            border-radius: 10px;
             font-size: 14px;
-            max-width: 250px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            width: 280px;
+            max-height: 70vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        #keyList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #keyList li {
+            margin: 8px 0;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        #keyList li:hover {
+            background: #f0f0f0;
+            cursor: pointer;
         }
 
-    #mapKey {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 14px;
-    width: 260px;
-    max-height: 300px; /* hauteur max visible */
-    overflow-y: auto;  /* scroll vertical */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
-}
-
-
-
-        #mapKey li {
-            margin-bottom: 5px;
+        .numbered-marker .marker-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 3px solid #000;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 13px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
         }
-
- 
- 
-.numbered-marker .marker-circle {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border: 3px solid #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 6.5px;
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.8);
-}
-#keyList {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
-
-#keyList li {
-    margin-bottom: 6px;
-}
-
-</style>
-    <script>
-        L_NO_TOUCH = false;
-        L_DISABLE_3D = false;
-    </script>
+    </style>
 </head>
 <body>
     <div class="folium-map" id="map"></div>
     <div id="mapKey">
-        <h5>Key</h5>
+        <h5 style="margin-top:0;">Légende des points</h5>
         <ul id="keyList"></ul>
     </div>
 </body>
 <script>
-    var markersMap = {};  // clé: nom, valeur: marker
-
-    // Initialisation de la carte
     var map = L.map("map", {
         center: [7.0, 12.0],
         zoom: 6,
-        zoomControl: true,
-        preferCanvas: false
+        zoomControl: true
     });
 
-    // Couche OpenStreetMap
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 19
     }).addTo(map);
 
-    // Tableau de couleurs distinctes
+    // Palette de couleurs (70 couleurs distinctes)
     var colors = [
-        '#e52d2d', '#e52816', '#e52700', '#e55d2d', '#e55d16', '#e56200', '#e58c2d', '#e59216', '#e59d00', '#e5bb2d',
-        '#e5c716', '#e5d800', '#e0e52d', '#cde516', '#b7e500', '#b1e52d', '#98e516', '#7ce500', '#81e52d', '#63e516',
-        '#41e500', '#52e52d', '#2ee516', '#06e500', '#2de538', '#16e534', '#00e534', '#2de567', '#16e569', '#00e56f',
-        '#2de596', '#16e59e', '#00e5aa', '#2de5c6', '#16e5d3', '#00e5e5', '#2dd5e5', '#16c2e5', '#00aae5', '#2da6e5',
-        '#168ce5', '#006fe5', '#2d77e5', '#1657e5', '#0034e5', '#2d48e5', '#1622e5', '#0600e5', '#422de5', '#4016e5',
-        '#4100e5', '#722de5', '#7516e5', '#7c00e5', '#a12de5', '#aa16e5', '#b700e5', '#d02de5', '#df16e5', '#e500d8',
-        '#e52dcb', '#e516b6', '#e5009d', '#e52d9c', '#e51681', '#e50062', '#e52d6c', '#e5164c', '#e50027', '#e52d3d'
+        '#e6194B','#3cb44b','#ffe119','#4363d8','#f58231','#911eb4','#42d4f4','#f032e6','#bfef45','#fabed4',
+        '#469990','#dcbeff','#9A6324','#fffac8','#800000','#aaffc3','#808000','#ffd8b1','#000075','#a9a9a9',
+        '#e6194B','#3cb44b','#ffe119','#4363d8','#f58231','#911eb4','#42d4f4','#f032e6','#bfef45','#fabed4',
+        '#469990','#dcbeff','#9A6324','#fffac8','#800000','#aaffc3','#808000','#ffd8b1','#000075','#a9a9a9',
+        '#e6194B','#3cb44b','#ffe119','#4363d8','#f58231','#911eb4','#42d4f4','#f032e6','#bfef45','#fabed4',
+        '#469990','#dcbeff','#9A6324','#fffac8','#800000','#aaffc3','#808000','#ffd8b1','#000075','#a9a9a9',
+        '#ffffff','#000000'
     ];
 
-    // Données mises à jour avec les nouvelles coordonnées décimales
-        var locations = [
+    var locations = [
         {name: "GIC DJOUMA", tel: "—", zone: "Bamguel, Maroua", region: "Extreme nord", lat: 10.8, lng: 14.05},
         {name: "NDOUMESSI", tel: "—", zone: "Kribi, Centre", region: "Sud", lat: 2.925, lng: 9.9167},
-        {name: "GIC PRODUCTEURS DES OIGNONS", tel: "—", zone: "Nord", region: "Nord", lat: 10.61, lng: 14.37},
-        {name: "GIC PRODUCTEURS DES PEPINIERES DE MAYO-LOUE", tel: "7E+08", zone: "Nord", region: "Nord", lat: 8.241056, lng: 13.21742},
         {name: "GIC MADINA DES PRODUCTEURS DES CULTURES MARAICHERES DE BARGARAM", tel: "6.53E+08", zone: "Bamguel, Maroua", region: "Extreme nord", lat: 10.8, lng: 14.05},
         {name: "groupe des élèves de Volaille de Rouge", tel: "6.77E+08", zone: "Donry-BENOUE", region: "Nord", lat: 10.74028, lng: 13.80278},
         {name: "Société coopérative simplifiée des éleveurs de poulet, de chair", tel: "6.92E+08", zone: "NASSARAO-GAROUA", region: "Nord", lat: 9.333333, lng: 13.18333},
@@ -193,97 +166,58 @@
         {name: "société Gic Niyya femme prod lait MINDIF", tel: "6.98E+08", zone: "Mindif departement Maye kany", region: "Extreme nord", lat: 10.4, lng: 14.43333},
         {name: "ATADJAM EPSE BAKARY", tel: "6-94-53-32-32", zone: "MAROUA, DOMAYO, BAR LAITIER NDJAREN", region: "Extreme nord", lat: 10.55, lng: 14.15},
         {name: "DAKGO POLYCARPE", tel: "677-003157", zone: "Douala", region: "Littoral", lat: 4.051389, lng: 9.685556}
+
     ];
 
-// Ajout d'un identifiant unique par entreprise (basé sur l'ordre de la liste)
-const locationsWithId = locations.map((loc, idx) => ({ ...loc, id: idx + 1 }));
+    // Compteur pour numéroter UNIQUEMENT les marqueurs réellement affichés
+    let uniqueNumberCounter = 1;
 
-// Prépare une liste filtrée et numérotée une seule fois pour garantir l'unicité des numéros
-const validLocations = locationsWithId
-    .filter(loc => loc.lat !== null && loc.lng !== null)
-    .map(loc => ({ ...loc, markerNumber: loc.id }));
+    // On parcourt toutes les entrées valides (avec coordonnées)
+    locations.forEach(function(loc) {
+        if (loc.lat === null || loc.lng === null) return; // on ignore ceux sans coordonnées
 
-// Grouper les coordonnées identiques pour les traiter ensemble
-const coordMap = new Map();
-validLocations.forEach(loc => {
-    const key = `${loc.lat},${loc.lng}`;
-    if (!coordMap.has(key)) {
-        coordMap.set(key, []);
-    }
-    coordMap.get(key).push(loc);
-});
+        // Numéro unique incrémental (indépendant des doublons de position)
+        const markerNumber = uniqueNumberCounter++;
+        const colorIndex = (markerNumber - 1) % colors.length;
+        const borderColor = colors[colorIndex];
 
-// Créer un compteur global pour les numéros uniques
-let uniqueNumber = 1;
+        // Création du marqueur numéroté
+        const iconHtml = `
+            <div class="numbered-marker">
+                <div class="marker-circle" style="border-color:${borderColor};background:${borderColor};color:white;">
+                    ${markerNumber}
+                </div>
+            </div>`;
 
-// Ajout des marqueurs
-coordMap.forEach((locationsAtSameCoord, key) => {
-    // Pour les coordonnées avec plusieurs entreprises
-    if (locationsAtSameCoord.length > 1) {
-        locationsAtSameCoord.forEach((loc, index) => {
-            // Assigner un numéro unique à chaque entreprise même si elles partagent les mêmes coordonnées
-            const displayNumber = uniqueNumber++;
-            addMarker(loc, displayNumber);
-            addToKeyList(loc, displayNumber);
-        });
-    } else {
-        // Pour les coordonnées avec une seule entreprise
-        const loc = locationsAtSameCoord[0];
-        const displayNumber = uniqueNumber++;
-        addMarker(loc, displayNumber);
-        addToKeyList(loc, displayNumber);
-    }
-});
-
-// Fonction pour ajouter un marqueur
-function addMarker(loc, markerNumber) {
-    var color = colors[(markerNumber - 1) % colors.length]; // couleur basée sur le numéro unique
-
-    // Création d'un divIcon avec un cercle + numéro
-    var iconHtml = `
-    <div class="numbered-marker" style="border-color:${color};">
-        <div class="marker-circle" style="border-color:${color};">${markerNumber}</div>
-    </div>
-    `;
-
-    var marker = L.marker([loc.lat, loc.lng], {
-        icon: L.divIcon({
+        const customIcon = L.divIcon({
             html: iconHtml,
             className: "",
-            iconSize: [10, 10],
-            iconAnchor: [15, 15]
-        }),
-    }).addTo(map);
+            iconSize: [34, 34],
+            iconAnchor: [17, 34],
+            popupAnchor: [0, -34]
+        });
 
-    markersMap[`${loc.name}_${markerNumber}`] = marker;
+        const marker = L.marker([loc.lat, loc.lng], { icon: customIcon }).addTo(map);
 
-    // Popup
-    var popupHtml = `
-        <div style="min-width:200px;">
-            <strong>${loc.name}</strong><br>
-            Numéro: ${markerNumber}<br>
-            Région : ${loc.region || "—"}<br>
-            Ville / zone : ${loc.zone || "—"}<br>
-            Tél : ${loc.tel || "—"}
-        </div>`;
-    marker.bindPopup(popupHtml, {maxWidth: 300});
-}
+        // Popup
+        const popupContent = `
+            <div style="font-size:14px;">
+                <b>${loc.name}</b><br>
+                Région : ${loc.region || "—"}<br>
+                Zone : ${loc.zone || "—"}<br>
+                Tél : ${loc.tel || "—"}
+            </div>`;
+        marker.bindPopup(popupContent);
 
-// Fonction pour ajouter à la liste de clés
-function addToKeyList(loc, markerNumber) {
-    var li = document.createElement("li");
-    li.textContent = `${markerNumber}  ${loc.name}`;
-    li.style.cursor = "pointer";
-    li.onclick = function () {
-        map.setView([loc.lat, loc.lng], 12);
-        // Trouver le bon marqueur
-        const markerKey = `${loc.name}_${markerNumber}`;
-        if (markersMap[markerKey]) {
-            markersMap[markerKey].openPopup();
-        }
-    };
-    document.getElementById("keyList").appendChild(li);
-}
-
+        // Ajout dans la légende
+        const li = document.createElement("li");
+        li.innerHTML = `<span style="display:inline-block;width:20px;text-align:center;color:white;background:${borderColor};border-radius:50%;padding:2px 6px;margin-right:8px;font-weight:bold;">${markerNumber}</span> ${loc.name}`;
+        li.style.cursor = "pointer";
+        li.onclick = () => {
+            map.setView([loc.lat, loc.lng], 14);
+            marker.openPopup();
+        };
+        document.getElementById("keyList").appendChild(li);
+    });
 </script>
 </html>

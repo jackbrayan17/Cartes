@@ -1,9 +1,10 @@
 import html
+import json
 import re
 from statistics import mean
 
 import folium
-
+from branca.element import MacroElement, Template
 
 RAW_DATA = """1\tGIC DJOUMA\t\tBamguel, Maroua \tExtreme nord\t14° 03′ Est\t10° 48′ N
 2\tNDOUMESSI\t\tKribi, Centre\tSud\t9,9167° E\t2,9250° N
@@ -181,22 +182,80 @@ def build_map(output_file: str = "index.html"):
     center = (mean([item["lat"] for item in data]), mean([item["lon"] for item in data]))
     fmap = folium.Map(location=center, zoom_start=6, tiles="OpenStreetMap")
 
-    for item in data:
-        popup = (
-            f"<b>{html.escape(item['name'])}</b><br>"
-            f"Région : {html.escape(item['region'])}<br>"
-            f"Ville / zone : {html.escape(item['city'])}<br>"
-            f"Tél : {html.escape(item['tel']) if item['tel'] else '—'}"
-        )
-        folium.CircleMarker(
-            location=[item["lat"], item["lon"]],
-            radius=5,
-            color="#3388ff",
-            weight=2,
-            fill=False,
-        ).add_child(folium.Popup(popup, max_width=300)).add_child(
-            folium.Tooltip(html.escape(item["name"]))
-        ).add_to(fmap)
+    data_js = json.dumps(data, ensure_ascii=False)
+    search_template = Template(
+        f"""
+        {{% macro html(this, kwargs) %}}
+        <div id="company-search-panel" style="position:absolute;top:10px;left:10px;z-index:1000;background:white;padding:8px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+            <input id="company-search-input" type="text" placeholder="Rechercher une entreprise" style="flex:1;min-width:220px;padding:6px 8px;border:1px solid #ccc;border-radius:4px;" />
+            <button id="company-search-btn" style="padding:6px 10px;border:1px solid #007bff;background:#007bff;color:white;border-radius:4px;cursor:pointer;">Recherche</button>
+            <div id="company-search-feedback" style="width:100%;font-size:12px;color:#555;margin-top:4px;"></div>
+        </div>
+        <script>
+        (function() {{
+            const data = {data_js};
+            function getMap() {{
+                for (const key in window) {{
+                    try {{
+                        if (window[key] && window[key] instanceof L.Map) return window[key];
+                    }} catch (e) {{}}
+                }}
+                return null;
+            }}
+            const map = getMap();
+            if (!map) return;
+
+            const markers = {{}};
+            data.forEach((item) => {{
+                const marker = L.circleMarker([item.lat, item.lon], {{
+                    radius: 5,
+                    color: '#3388ff',
+                    weight: 2,
+                    fill: false,
+                }}).addTo(map);
+                const popupHtml = `<b>${{item.name}}</b><br>Région : ${{item.region}}<br>Ville / zone : ${{item.city}}<br>Tél : ${{item.tel || '—'}}`;
+                marker.bindPopup(popupHtml);
+                marker.bindTooltip(item.name);
+                markers[item.name.toLowerCase()] = marker;
+            }});
+
+            const input = document.getElementById('company-search-input');
+            const feedback = document.getElementById('company-search-feedback');
+            const btn = document.getElementById('company-search-btn');
+
+            function focusOn(item) {{
+                const marker = markers[item.name.toLowerCase()];
+                map.setView([item.lat, item.lon], 10);
+                if (marker) marker.openPopup();
+            }}
+
+            function search() {{
+                const term = (input.value || '').trim().toLowerCase();
+                if (!term) {{
+                    feedback.textContent = 'Saisir un nom.';
+                    return;
+                }}
+                const match = data.find(d => d.name.toLowerCase().includes(term));
+                if (!match) {{
+                    feedback.textContent = 'Aucun résultat.';
+                    return;
+                }}
+                feedback.textContent = `Affichage : ${{match.name}}`;
+                focusOn(match);
+            }}
+
+            btn.addEventListener('click', search);
+            input.addEventListener('keypress', (e) => {{
+                if (e.key === 'Enter') search();
+            }});
+        }})();
+        </script>
+        {{% endmacro %}}
+        """
+    )
+    macro = MacroElement()
+    macro._template = search_template
+    fmap.get_root().add_child(macro)
 
     fmap.save(output_file)
     print(f"Carte mise à jour générée dans {output_file} avec {len(data)} points.")

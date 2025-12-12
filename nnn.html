@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-   <style>
+    <style>
         #map {
             position: absolute;
             top: 0; bottom: 0; left: 0; right: 0;
@@ -21,58 +21,7 @@
         }
         html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
         .leaflet-container { font-size: 1rem; }
-
-        /* Style for map key */
-        #mapKey {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 14px;
-            max-width: 250px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-    #mapKey {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 14px;
-    width: 260px;
-    max-height: 300px; /* hauteur max visible */
-    overflow-y: auto;  /* scroll vertical */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
-}
-
-
-
-        #mapKey li {
-            margin-bottom: 5px;
-        }
-
- 
- 
-.numbered-marker .marker-circle {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border: 3px solid #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 6.5px;
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
-
-</style>
+    </style>
     <script>
         L_NO_TOUCH = false;
         L_DISABLE_3D = false;
@@ -80,14 +29,12 @@
 </head>
 <body>
     <div class="folium-map" id="map"></div>
-    <div id="mapKey">
+    <div id="mapKey" style="position: fixed; top: 10px; right: 10px; background: rgba(255, 255, 255, 0.8); padding: 10px;">
         <h5>Key</h5>
         <ul id="keyList"></ul>
     </div>
 </body>
 <script>
-    var markersMap = {};  // clé: nom, valeur: marker
-
     // Initialisation de la carte
     var map = L.map("map", {
         center: [7.0, 12.0],
@@ -188,53 +135,34 @@
     ];
 
 // Ajout des marqueurs (seulement ceux avec coordonnées valides)
-locations.forEach(function(loc, index) {
-    if (loc.lat === null || loc.lng === null) return;
+    locations.forEach(function(loc, index) {
+        if (loc.lat === null || loc.lng === null) return; // ignore les entrées sans coordonnées
 
-    var color = colors[index % colors.length];
-    var number = index + 1;
+        var color = colors[index % colors.length];
 
-    // Création d'un divIcon avec un cercle + numéro
-    var iconHtml = `
-    <div class="numbered-marker" style="border-color:${color};">
-        <div class="marker-circle" style="border-color:${color};">${index + 1}</div>
-    </div>
-`;
+        var marker = L.circleMarker([loc.lat, loc.lng], {
+            color: color,
+            fill: true,
+            fillColor: color,
+            fillOpacity: 0.8,
+            radius: 8,
+            weight: 2
+        }).addTo(map);
 
+        // Popup au clic
+        var popupHtml = `
+            <div style="min-width:200px;">
+                <strong>${loc.name}</strong><br>
+                Région : ${loc.region || "—"}<br>
+                Ville / zone : ${loc.zone || "—"}<br>
+                Tél : ${loc.tel || "—"}
+            </div>`;
+        marker.bindPopup(popupHtml, {maxWidth: 300});
 
-var marker = L.marker([loc.lat, loc.lng], {
-    icon: L.divIcon({
-        html: iconHtml,
-        className: "", // important sinon Leaflet met une classe par défaut qui casse ton style
-        iconSize: [10, 10],
-        iconAnchor: [15, 15],
-        markerColor: 'red'
-
-    }),
-    
-}).addTo(map);
-
- markersMap[loc.name] = marker;
-    // Popup
-    var popupHtml = `
-        <div style="min-width:200px;">
-            <strong>${loc.name}</strong><br>
-            Région : ${loc.region || "—"}<br>
-            Ville / zone : ${loc.zone || "—"}<br>
-            Tél : ${loc.tel || "—"}
-        </div>`;
-    marker.bindPopup(popupHtml, {maxWidth: 300});
-
-     // Ajouter dans la mapKey
-    var li = document.createElement("li");
-    li.textContent = loc.name;
-    li.style.cursor = "pointer";
-    li.onclick = function () {
-        map.setView([loc.lat, loc.lng], 12);
-        marker.openPopup();
-    };
-    document.getElementById("keyList").appendChild(li);
-});
-
+        // Ajouter l'entrée au "map key"
+        var keyItem = document.createElement('li');
+        keyItem.textContent = `${index + 1}: ${loc.name}`;
+        document.getElementById('keyList').appendChild(keyItem);
+    });
 </script>
 </html>

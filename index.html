@@ -70,7 +70,15 @@
     font-weight: bold;
     background-color: rgba(255, 255, 255, 0.8);
 }
+#keyList {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
 
+#keyList li {
+    margin-bottom: 6px;
+}
 
 </style>
     <script>
@@ -227,7 +235,7 @@ var marker = L.marker([loc.lat, loc.lng], {
 
      // Ajouter dans la mapKey
     var li = document.createElement("li");
-    li.textContent = loc.name;
+    li.textContent = `${index + 1}  ${loc.name}`;
     li.style.cursor = "pointer";
     li.onclick = function () {
         map.setView([loc.lat, loc.lng], 12);

@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <style>
@@ -75,12 +74,21 @@
     </div>
 </body>
 <script>
+    // Limites du Cameroun en latitude et longitude (coordonnées approximatives)
+    var bounds = [
+        [1.5, 9.2],  // Sud-ouest
+        [13.5, 16.5] // Nord-est
+    ];
+
     var map = L.map("map", {
-        center: [7.0, 12.0],
+        center: [5.0, 10.0],  // Centrer la carte sur le Cameroun
         zoom: 6,
-        zoomControl: true
+        zoomControl: true,
+        maxBounds: bounds,  // Limiter la carte aux coordonnées du Cameroun
+        maxBoundsViscosity: 1.0,  // Verrouiller les bords de la carte
     });
 
+    // Couche OpenStreetMap
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 19

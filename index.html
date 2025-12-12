@@ -35,52 +35,49 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
-    #mapKey {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 14px;
-    width: 260px;
-    max-height: 300px; /* hauteur max visible */
-    overflow-y: auto;  /* scroll vertical */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
-}
-
-
+        #mapKey {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 260px;
+            max-height: 300px; /* hauteur max visible */
+            overflow-y: auto;  /* scroll vertical */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+        }
 
         #mapKey li {
             margin-bottom: 5px;
         }
 
- 
- 
-.numbered-marker .marker-circle {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border: 3px solid #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 6.5px;
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.8);
-}
-#keyList {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
+        .numbered-marker .marker-circle {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            border: 3px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6.5px;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
 
-#keyList li {
-    margin-bottom: 6px;
-}
+        #keyList {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
 
-</style>
+        #keyList li {
+            margin-bottom: 6px;
+        }
+
+    </style>
     <script>
         L_NO_TOUCH = false;
         L_DISABLE_3D = false;
@@ -122,7 +119,7 @@
     ];
 
     // Données mises à jour avec les nouvelles coordonnées décimales
-        var locations = [
+    var locations = [
         {name: "GIC DJOUMA", tel: "—", zone: "Bamguel, Maroua", region: "Extreme nord", lat: 10.8, lng: 14.05},
         {name: "NDOUMESSI", tel: "—", zone: "Kribi, Centre", region: "Sud", lat: 2.925, lng: 9.9167},
         {name: "GIC PRODUCTEURS DES OIGNONS", tel: "—", zone: "Nord", region: "Nord", lat: 10.61, lng: 14.37},
@@ -193,58 +190,59 @@
         {name: "société Gic Niyya femme prod lait MINDIF", tel: "6.98E+08", zone: "Mindif departement Maye kany", region: "Extreme nord", lat: 10.4, lng: 14.43333},
         {name: "ATADJAM EPSE BAKARY", tel: "6-94-53-32-32", zone: "MAROUA, DOMAYO, BAR LAITIER NDJAREN", region: "Extreme nord", lat: 10.55, lng: 14.15},
         {name: "DAKGO POLYCARPE", tel: "677-003157", zone: "Douala", region: "Littoral", lat: 4.051389, lng: 9.685556}
+
+        // Ajoutez d'autres entrées ici si nécessaire...
     ];
 
-// Ajout d'un identifiant unique par entreprise (basé sur l'ordre de la liste)
-const locationsWithId = locations.map((loc, idx) => ({ ...loc, id: idx + 1 }));
+    // Ajout d'un identifiant unique par entreprise (basé sur l'ordre de la liste)
+    const locationsWithId = locations.map((loc, idx) => ({ ...loc, id: idx + 1 }));
 
-// Prépare une liste filtrée et numérotée une seule fois pour garantir l'unicité des numéros
-const validLocations = locationsWithId
-    .filter(loc => loc.lat !== null && loc.lng !== null)
-    .map(loc => ({ ...loc, markerNumber: loc.id }));
+    // Prépare une liste filtrée et numérotée une seule fois pour garantir l'unicité des numéros
+    const validLocations = locationsWithId
+        .filter(loc => loc.lat !== null && loc.lng !== null)
+        .map(loc => ({ ...loc, markerNumber: loc.id }));
 
-// Ajout des marqueurs
-validLocations.forEach(function(loc) {
-    var color = colors[(loc.markerNumber - 1) % colors.length]; // couleur basée sur le numéro unique
+    // Ajout des marqueurs
+    validLocations.forEach(function(loc) {
+        var color = colors[(loc.markerNumber - 1) % colors.length]; // couleur basée sur le numéro unique
 
-    // Création d'un divIcon avec un cercle + numéro
-    var iconHtml = `
-    <div class="numbered-marker" style="border-color:${color};">
-        <div class="marker-circle" style="border-color:${color};">${loc.markerNumber}</div>
-    </div>
-    `;
+        // Création d'un divIcon avec un cercle + numéro
+        var iconHtml = `
+        <div class="numbered-marker" style="border-color:${color};">
+            <div class="marker-circle" style="border-color:${color};">${loc.markerNumber}</div>
+        </div>
+        `;
 
-    var marker = L.marker([loc.lat, loc.lng], {
-        icon: L.divIcon({
-            html: iconHtml,
-            className: "",
-            iconSize: [10, 10],
-            iconAnchor: [15, 15]
-        }),
-    }).addTo(map);
+        var marker = L.marker([loc.lat, loc.lng], {
+            icon: L.divIcon({
+                html: iconHtml,
+                className: "",
+                iconSize: [10, 10],
+                iconAnchor: [15, 15]
+            }),
+        }).addTo(map);
 
-    markersMap[loc.name] = marker;
+        markersMap[loc.name] = marker;
 
-    // Popup
-    var popupHtml = `
-        <div style="min-width:200px;">
-            <strong>${loc.name}</strong><br>
-            Région : ${loc.region || "—"}<br>
-            Ville / zone : ${loc.zone || "—"}<br>
-            Tél : ${loc.tel || "—"}
-        </div>`;
-    marker.bindPopup(popupHtml, {maxWidth: 300});
+        // Popup
+        var popupHtml = `
+            <div style="min-width:200px;">
+                <strong>${loc.name}</strong><br>
+                Région : ${loc.region || "—"}<br>
+                Ville / zone : ${loc.zone || "—"}<br>
+                Tél : ${loc.tel || "—"}
+            </div>`;
+        marker.bindPopup(popupHtml, {maxWidth: 300});
 
-    // Ajouter dans la mapKey
-    var li = document.createElement("li");
-    li.textContent = `${loc.markerNumber}  ${loc.name}`;
-    li.style.cursor = "pointer";
-    li.onclick = function () {
-        map.setView([loc.lat, loc.lng], 12);
-        marker.openPopup();
-    };
-    document.getElementById("keyList").appendChild(li);
-});
-
+        // Ajouter dans la mapKey
+        var li = document.createElement("li");
+        li.textContent = `${loc.markerNumber}  ${loc.name}`;
+        li.style.cursor = "pointer";
+        li.onclick = function () {
+            map.setView([loc.lat, loc.lng], 12);
+            marker.openPopup();
+        };
+        document.getElementById("keyList").appendChild(li);
+    });
 </script>
 </html>

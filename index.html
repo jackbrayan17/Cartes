@@ -195,34 +195,36 @@
         {name: "DAKGO POLYCARPE", tel: "677-003157", zone: "Douala", region: "Littoral", lat: 4.051389, lng: 9.685556}
     ];
 
-// Ajout des marqueurs (seulement ceux avec coordonnées valides)
-locations.forEach(function(loc, index) {
-    if (loc.lat === null || loc.lng === null) return;
+// Ajout d'un identifiant unique par entreprise (basé sur l'ordre de la liste)
+const locationsWithId = locations.map((loc, idx) => ({ ...loc, id: idx + 1 }));
 
-    var color = colors[index % colors.length];
-    var number = index + 1;
+// Prépare une liste filtrée et numérotée une seule fois pour garantir l'unicité des numéros
+const validLocations = locationsWithId
+    .filter(loc => loc.lat !== null && loc.lng !== null)
+    .map(loc => ({ ...loc, markerNumber: loc.id }));
+
+// Ajout des marqueurs
+validLocations.forEach(function(loc) {
+    var color = colors[(loc.markerNumber - 1) % colors.length]; // couleur basée sur le numéro unique
 
     // Création d'un divIcon avec un cercle + numéro
     var iconHtml = `
     <div class="numbered-marker" style="border-color:${color};">
-        <div class="marker-circle" style="border-color:${color};">${index + 1}</div>
+        <div class="marker-circle" style="border-color:${color};">${loc.markerNumber}</div>
     </div>
-`;
+    `;
 
+    var marker = L.marker([loc.lat, loc.lng], {
+        icon: L.divIcon({
+            html: iconHtml,
+            className: "",
+            iconSize: [10, 10],
+            iconAnchor: [15, 15]
+        }),
+    }).addTo(map);
 
-var marker = L.marker([loc.lat, loc.lng], {
-    icon: L.divIcon({
-        html: iconHtml,
-        className: "", // important sinon Leaflet met une classe par défaut qui casse ton style
-        iconSize: [10, 10],
-        iconAnchor: [15, 15],
-        markerColor: 'red'
+    markersMap[loc.name] = marker;
 
-    }),
-    
-}).addTo(map);
-
- markersMap[loc.name] = marker;
     // Popup
     var popupHtml = `
         <div style="min-width:200px;">
@@ -233,9 +235,9 @@ var marker = L.marker([loc.lat, loc.lng], {
         </div>`;
     marker.bindPopup(popupHtml, {maxWidth: 300});
 
-     // Ajouter dans la mapKey
+    // Ajouter dans la mapKey
     var li = document.createElement("li");
-    li.textContent = `${index + 1}  ${loc.name}`;
+    li.textContent = `${loc.markerNumber}  ${loc.name}`;
     li.style.cursor = "pointer";
     li.onclick = function () {
         map.setView([loc.lat, loc.lng], 12);
